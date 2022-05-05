@@ -66,8 +66,7 @@ function svgLoaded(element: SVGElement) {
     panzoom(element, 
     {
         bounds: true,
-        minZoom: 1,
-        boundsPadding: 0.7,
+        minZoom: 1.0,
         smoothScroll: false
     });
 }
@@ -75,21 +74,13 @@ function svgLoaded(element: SVGElement) {
 </script>
 
 <template>
-    <div class="svgContainer">
-        <inline-svg class="svg"
-            src="worldHigh.svg"
-            :keepDuringLoading="false"
-            :transformSource="renderCountries"
-            @loaded="svgLoaded"
-        ></inline-svg>
-    </div>
+    <inline-svg
+        src="worldHigh.svg"
+        :keepDuringLoading="false"
+        :transformSource="renderCountries"
+        @loaded="svgLoaded"
+    ></inline-svg>
 </template>
 
 <style scoped>
-.svgContainer {
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  overflow: hidden;
-}
 </style>

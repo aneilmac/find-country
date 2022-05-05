@@ -10,7 +10,7 @@ function todayCountries(count=3) {
   const n = new Date();
   n.setHours(0, 0, 0, 0);
   // Seed with today's date @ midnight.
-  const arng =  seedrandom(n.toUTCString());
+  const arng =  seedrandom(n.toUTCString() + " FIND COUNTRY");
 
   const cs : string[] = [];
   for (let i = 0; i < count; ++i) {
