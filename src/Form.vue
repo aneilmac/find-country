@@ -3,7 +3,7 @@ import { toRefs, ref, type Ref, watch, computed } from 'vue';
 import EntryText from './EntryText.vue';
 import type { CountryData } from './countryCodes';
 
-const props = defineProps<{targetCountries: string[];}>();
+const props = defineProps<{targetCountries: CountryData[];}>();
 const {targetCountries} = toRefs(props);
 const numEntries = computed(() => targetCountries.value.length);
 
@@ -17,12 +17,11 @@ watch(numEntries, (newValue: number, _oldValue: number) => {
     }
 });
 
-const regionNames = new Intl.DisplayNames(['en'], {type: 'region'});
 const incorrect = computed(() => {
     let count = [];
     for (const ca of targetCountries.value) {
-        if (!selectedCountries.value.some(x => x?.code === ca)) {
-            count.push(regionNames.of(ca));
+        if (!selectedCountries.value.some(x => x?.code === ca.code)) {
+            count.push(ca.name);
         }
     }
     return count;

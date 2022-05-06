@@ -2,9 +2,6 @@
 import { countryCodes, type CountryData } from './countryCodes';
 import {ref, type Ref, defineProps, watch, toRefs} from 'vue';
 
-const regionNames = new Intl.DisplayNames(['en'], {type: 'region'});
-const countries = ref(countryCodes.map(x => ({ "code": x, "name": regionNames.of(x) })));
-
 const props = defineProps<{index: number; selectedCountries: (CountryData | null)[];}>();
 
 const {index, selectedCountries} = toRefs(props);
@@ -18,7 +15,7 @@ watch(selected, (newValue: CountryData | null, oldValue: CountryData |null) => {
 </script>
 
 <template>
-    <v-select v-model="selected" label="name" :options="countries" :appendToBody="true"></v-select>
+    <v-select v-model="selected" label="name" :options="countryCodes" :appendToBody="true"></v-select>
 </template>
 
 <style scoped>

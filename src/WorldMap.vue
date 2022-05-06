@@ -1,11 +1,11 @@
 <script setup lang="ts">
 import { defineProps, toRefs, ref, type Ref, withDefaults, computed } from 'vue';
-import type { CountryData } from './countryCodes';
+import  type {  CountryData } from './countryCodes';
 import panzoom from 'panzoom';
 
 const props = withDefaults(
     defineProps<{
-        hiddenCountries: string[];
+        hiddenCountries: CountryData[];
     }>(), { 
         hiddenCountries: () => []
     } 
@@ -17,7 +17,7 @@ const selectedCountries: Ref<(CountryData | null)[]> = ref([]);
 const countryCols = computed(() => {
     const cols: any = {};
     for (let a of hiddenCountries.value) {
-        cols[a] = "hidden";
+        cols[a.code] = "hidden";
     }
     for (let a of selectedCountries.value) {
         if (a) {
