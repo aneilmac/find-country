@@ -21,7 +21,7 @@ const countryCols = computed(() => {
     }
     for (let a of selectedCountries.value) {
         if (a) {
-            if (cols[a.code]) {
+            if (cols[a.code] == "hidden") {
                 cols[a.code] = "correct";
             }
             else {
