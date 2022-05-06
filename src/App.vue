@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import WorldMap from './WorldMap.vue'
 import seedrandom from 'seedrandom';
-import { type CountryData, countryCodes } from './countryCodes';
+import { type CountryData, validDeletable } from './countryCodes';
 import {ref} from 'vue';
 import Form from './Form.vue';
 
@@ -15,8 +15,8 @@ function todayCountries(count=3) {
   const cs : CountryData[] = [];
   for (let i = 0; i < count; ++i) {
     // Calculate random country code
-    const index = arng.double() * countryCodes.length | 0;
-    const cc = countryCodes[index];
+    const index = arng.double() * validDeletable.length | 0;
+    const cc = validDeletable[index];
 
     // Ensure we have no duplicates.
     if (cs.some(x => x.code === cc.code)) {
