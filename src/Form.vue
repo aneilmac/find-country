@@ -39,7 +39,11 @@ function submitCountries() {
 </script>
 
 <template>
-    <div>
+    <div
+        @touchstart.native.stop
+        @touchmove.native.stop
+        @touchend.native.stop
+    >
         <h1>Find the missing countries</h1>
         <div>
             {{numEntries}} countries have been removed from this map.<br>
@@ -74,13 +78,10 @@ function submitCountries() {
 h1 {
     text-align: center;
 }
-
 .member {
     padding: 10px;
 }
-
 .b {
     width: 100%;
 }
-
 </style>

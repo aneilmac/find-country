@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { defineProps, toRefs, ref, type Ref, withDefaults, computed } from 'vue';
+import { toRefs, ref, type Ref, withDefaults, computed } from 'vue';
 import  type {  CountryData } from './countryCodes';
 import panzoom from 'panzoom';
 
@@ -11,9 +11,16 @@ const props = withDefaults(
     } 
 );
 
+// List of countries to hide.
 const { hiddenCountries } = toRefs(props);
+
+// List of countries user has selected.
 const selectedCountries: Ref<(CountryData | null)[]> = ref([]);
 
+// Computed dictionary of country codes and their state, can be one of:
+// 1. hidden = user has not found/selected this country.
+// 2. correct = user has discovered hidden country.
+// 3. incorrect = user has mistakenly clicked a different country.
 const countryCols = computed(() => {
     const cols: any = {};
     for (let a of hiddenCountries.value) {
@@ -32,8 +39,14 @@ const countryCols = computed(() => {
     return cols;
 });
 
+// Flag as to whether the user has finalized their choices or not.
 const submitted : Ref<boolean> = ref(false);
 
+/**
+ * Edits the SVG render. Removes countries and/or colours countries based on 
+ * user submission.
+ * @param svg SVG document to edit.
+ */
 function renderCountries(svg: Document) {
     for (const [k, v] of Object.entries(countryCols.value)) {
         const a = svg.getElementById(k);
@@ -55,6 +68,10 @@ function renderCountries(svg: Document) {
     return svg;
 }
 
+/**
+ * Called by parent, applies the user's guesses to the map.
+ * @param cc Countries user has selected as their guesses.
+ */
 function guessCountries(cc: CountryData[]) {
     submitted.value = true;
     selectedCountries.value = [...cc];
@@ -62,15 +79,19 @@ function guessCountries(cc: CountryData[]) {
 }
 defineExpose({guessCountries});
 
-function svgLoaded(element: SVGElement) {
+/**
+ * After SVG is injected into DOM, adds navigation properties to the SVG. 
+ * @param element 
+ */
+function addSvgNavigation(element: SVGElement) {
     panzoom(element, 
     {
         bounds: true,
         minZoom: 1.0,
-        smoothScroll: false
+        smoothScroll: false,
+        onTouch: _e => false
     });
 }
-
 </script>
 
 <template>
@@ -78,7 +99,7 @@ function svgLoaded(element: SVGElement) {
         src="worldHigh.svg"
         :keepDuringLoading="false"
         :transformSource="renderCountries"
-        @loaded="svgLoaded"
+        @loaded="addSvgNavigation"
     ></inline-svg>
 </template>
 

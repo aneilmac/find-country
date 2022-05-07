@@ -1,10 +1,15 @@
 <script setup lang="ts">
 import WorldMap from './WorldMap.vue'
 import seedrandom from 'seedrandom';
-import { type CountryData, validDeletable } from './countryCodes';
+import type { CountryData } from './countryCodes';
+import { validCodes } from './validCodes';
 import {ref} from 'vue';
 import Form from './Form.vue';
 
+/**
+ * Randomly selects `count` countries pseudorandomly. Guaranteed to always
+ * return the same countries in a 24 hour period. 
+ */
 function todayCountries(count=3) {
   // Grab today's date.
   const n = new Date();
@@ -13,17 +18,13 @@ function todayCountries(count=3) {
   const arng =  seedrandom(n.toUTCString() + " FIND COUNTRY");
 
   const cs : CountryData[] = [];
+  let vv = [...validCodes];
   for (let i = 0; i < count; ++i) {
     // Calculate random country code
-    const index = arng.double() * validDeletable.length | 0;
-    const cc = validDeletable[index];
-
+    const index = arng.double() * vv.length | 0;
+    cs.push(vv[index]);
     // Ensure we have no duplicates.
-    if (cs.some(x => x.code === cc.code)) {
-      i -= 1;
-    } else {
-      cs.push(cc);
-    }
+    vv.splice(index, 1);
   }
 
   cs.sort();
@@ -43,8 +44,6 @@ const worldMap = ref();
 </template>
 
 <style>
-/* @import "@/assets/base.css"; */
-
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@500&display=swap');
 body {
   font-family: 'Montserrat', sans-serif;

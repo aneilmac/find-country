@@ -1,6 +1,7 @@
 import { createApp} from 'vue'
 import App from './App.vue'
 import InlineSvg from 'vue-inline-svg';
+// @ts-ignore
 import vSelect from 'vue-select';
 
 createApp(App)
